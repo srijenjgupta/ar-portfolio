@@ -2,69 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Srijen Gupta - AI PM Portfolio</title>
-    <!-- Google Model Viewer for Markerless Surface Tracking -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Srijen Gupta - AI PM</title>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    
     <style>
-        body { margin: 0; background-color: #0d1117; color: white; font-family: -apple-system, sans-serif; display: flex; flex-direction: column; height: 100vh; }
-        
-        .viewer-container { flex-grow: 1; position: relative; width: 100%; }
-        model-viewer { width: 100%; height: 100%; }
-        
-        /* The button that triggers the camera mapping */
-        .ar-launch-btn {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: #238636; color: white; border: none; padding: 14px 28px;
-            font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        /* Sleek dark gradient background to make the avatar pop */
+        body { 
+            margin: 0; 
+            background: radial-gradient(circle at center, #1e2631 0%, #0d1117 100%); 
+            color: white; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            overflow: hidden; 
         }
-
-        .ui-panel { padding: 25px 20px; text-align: center; background: #161b22; border-top: 1px solid #30363d; }
-        .btn-group { display: flex; gap: 12px; justify-content: center; margin-top: 15px; }
-        .btn { padding: 12px 20px; font-weight: 600; border-radius: 25px; text-decoration: none; flex: 1; max-width: 160px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
-        .btn-linkedin { background: #0077B5; color: white; }
-        .btn-github { background: #ffffff; color: black; }
         
-        audio { margin-top: 15px; width: 100%; max-width: 320px; height: 35px; }
+        /* The Audio Unlock Screen */
+        #splash { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #0d1117; z-index: 100; display: flex; 
+            flex-direction: column; justify-content: center; align-items: center; 
+        }
+        .launch-btn { 
+            background: #2ea043; color: white; border: none; padding: 16px 32px; 
+            font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(46, 160, 67, 0.4); transition: transform 0.1s;
+        }
+        .launch-btn:active { transform: scale(0.95); }
+
+        /* The 3D Viewport */
+        .avatar-container { flex-grow: 1; width: 100%; position: relative; }
+        
+        /* Removes the default white background from the 3D viewer */
+        model-viewer { width: 100%; height: 100%; --poster-color: transparent; }
+
+        /* The clean UI overlay at the bottom */
+        .ui-panel { 
+            position: absolute; bottom: 0; width: 100%; padding: 40px 20px 30px 20px; 
+            box-sizing: border-box; 
+            background: linear-gradient(to top, rgba(13,17,23,1) 60%, rgba(13,17,23,0)); 
+            text-align: center; pointer-events: none;
+        }
+        h2 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+        p { color: #8b949e; margin: 6px 0 24px 0; font-size: 15px; font-weight: 500; }
+        
+        .btn-group { display: flex; gap: 12px; justify-content: center; pointer-events: auto; }
+        .btn { 
+            padding: 14px 0; font-weight: 600; border-radius: 12px; 
+            text-decoration: none; flex: 1; max-width: 160px; font-size: 15px; 
+        }
+        .btn-linkedin { background: #0077B5; color: white; }
+        .btn-github { background: #ffffff; color: #111111; }
     </style>
 </head>
 <body>
 
-    <!-- 3D and AR Viewport -->
-    <div class="viewer-container">
-        <model-viewer src="avatar.glb" 
-                      ar ar-modes="webxr scene-viewer quick-look" 
-                      camera-controls autoplay shadow-intensity="1">
-            
-            <button slot="ar-button" class="ar-launch-btn">View in 3D Space</button>
+    <div id="splash">
+        <button class="launch-btn" onclick="startPresentation()">Meet Srijen</button>
+    </div>
+
+    <audio id="audioTrack" src="voiceover.mp3" preload="auto"></audio>
+
+    <div class="avatar-container">
+        <model-viewer id="avatar" src="avatar.glb" 
+                      camera-orbit="0deg 85deg 2.2m" 
+                      interaction-prompt="none"
+                      disable-zoom disable-pan
+                      shadow-intensity="1">
         </model-viewer>
     </div>
 
-    <!-- Persistent Profile UI -->
     <div class="ui-panel">
-        <h2 style="margin: 0; font-size: 22px;">Srijen Gupta</h2>
-        <p style="color: #8b949e; margin: 5px 0 0 0; font-size: 14px;">AI Product Management & Portfolio Optimization</p>
-        
-        <!-- Native Audio Controls to bypass mobile autoplay blocks safely -->
-        <audio id="audioTrack" src="voiceover.mp3" controls></audio>
-        
+        <h2>Srijen Gupta</h2>
+        <p>AI Product Management & Portfolio Optimization</p>
         <div class="btn-group">
-            <a href="https://www.linkedin.com/in/srijenjgupta/" class="btn btn-linkedin">Connect</a>
-            <a href="https://github.com/srijenjgupta/" class="btn btn-github">GitHub</a>
+            <a href="https://www.linkedin.com/in/srijenjgupta/" target="_blank" class="btn btn-linkedin">LinkedIn</a>
+            <a href="https://github.com/srijenjgupta/" target="_blank" class="btn btn-github">GitHub</a>
         </div>
     </div>
 
     <script>
-        const viewer = document.querySelector('model-viewer');
-        const audio = document.getElementById('audioTrack');
-
-        // Play audio automatically the exact moment the user drops the avatar into their physical space
-        viewer.addEventListener('ar-status', (event) => {
-            if(event.detail.status === 'session-started') {
-                audio.play().catch(e => console.log("Audio permission bypassed", e));
-            }
-        });
+        function startPresentation() {
+            // Remove the splash screen
+            document.getElementById('splash').style.display = 'none';
+            
+            // Play the audio
+            const audio = document.getElementById('audioTrack');
+            audio.play().catch(e => console.log("Audio blocked", e));
+            
+            // Force the 3D animation to play from the exact beginning to sync with audio
+            const viewer = document.getElementById('avatar');
+            viewer.currentTime = 0;
+            viewer.play();
+        }
     </script>
 </body>
 </html>
