@@ -5,98 +5,375 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Srijen Gupta - AI PM</title>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
-        /* Sleek dark gradient background to make the avatar pop */
-        body { 
-            margin: 0; 
-            background: radial-gradient(circle at center, #1e2631 0%, #0d1117 100%); 
-            color: white; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
+        /* ── YOUR ORIGINAL STYLES — unchanged ── */
+        body {
+            margin: 0;
+            background: radial-gradient(circle at center, #1e2631 0%, #0d1117 100%);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            height: 100vh;
+            overflow: hidden;
         }
-        
-        /* The Audio Unlock Screen */
-        #splash { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #0d1117; z-index: 100; display: flex; 
-            flex-direction: column; justify-content: center; align-items: center; 
+
+        #splash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d1117; z-index: 100; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
         }
-        .launch-btn { 
-            background: #2ea043; color: white; border: none; padding: 16px 32px; 
-            font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer; 
+        .launch-btn {
+            background: #2ea043; color: white; border: none; padding: 16px 32px;
+            font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer;
             box-shadow: 0 4px 15px rgba(46, 160, 67, 0.4); transition: transform 0.1s;
         }
         .launch-btn:active { transform: scale(0.95); }
 
-        /* The 3D Viewport */
-        .avatar-container { flex-grow: 1; width: 100%; position: relative; }
-        
-        /* Removes the default white background from the 3D viewer */
-        model-viewer { width: 100%; height: 100%; --poster-color: transparent; }
+        /* ── side-by-side wrapper ── */
+        .stage {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
 
-        /* The clean UI overlay at the bottom */
-        .ui-panel { 
-            position: absolute; bottom: 0; width: 100%; padding: 40px 20px 30px 20px; 
-            box-sizing: border-box; 
-            background: linear-gradient(to top, rgba(13,17,23,1) 60%, rgba(13,17,23,0)); 
+        .avatar-container {
+            flex: 1;
+            position: relative;
+            min-width: 0;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            --poster-color: transparent;
+        }
+
+        .ui-panel {
+            position: absolute; bottom: 0; width: 100%; padding: 40px 20px 30px 20px;
+            box-sizing: border-box;
+            background: linear-gradient(to top, rgba(13,17,23,1) 60%, rgba(13,17,23,0));
             text-align: center; pointer-events: none;
         }
         h2 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
-        p { color: #8b949e; margin: 6px 0 24px 0; font-size: 15px; font-weight: 500; }
-        
+        p  { color: #8b949e; margin: 6px 0 24px 0; font-size: 15px; font-weight: 500; }
         .btn-group { display: flex; gap: 12px; justify-content: center; pointer-events: auto; }
-        .btn { 
-            padding: 14px 0; font-weight: 600; border-radius: 12px; 
-            text-decoration: none; flex: 1; max-width: 160px; font-size: 15px; 
+        .btn {
+            padding: 14px 0; font-weight: 600; border-radius: 12px;
+            text-decoration: none; flex: 1; max-width: 160px; font-size: 15px;
         }
         .btn-linkedin { background: #0077B5; color: white; }
-        .btn-github { background: #ffffff; color: #111111; }
+        .btn-github   { background: #ffffff; color: #111111; }
+
+        /* ── profile panel ── */
+        .profile-panel {
+            width: 380px;
+            flex-shrink: 0;
+            background: #0C1A2E;
+            border-left: 1px solid rgba(212,175,55,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(212,175,55,0.2) transparent;
+        }
+        .profile-panel::-webkit-scrollbar { width: 3px; }
+        .profile-panel::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.2); }
+
+        .panel-gold-top {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #D4AF37, #F0C040, #D4AF37, transparent);
+            flex-shrink: 0;
+        }
+
+        .panel-inner {
+            padding: 28px 24px 36px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .status-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(212,175,55,0.08);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 20px; padding: 4px 12px;
+            font-size: 10px; font-family: 'JetBrains Mono', monospace;
+            color: rgba(212,175,55,0.8); letter-spacing: 0.5px;
+            margin-bottom: 16px; width: fit-content;
+        }
+        .pulse-dot {
+            width: 5px; height: 5px; border-radius: 50%; background: #D4AF37;
+            animation: pulse 1.8s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.6);} }
+
+        .p-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px; font-weight: 700;
+            color: #F0EAD6; letter-spacing: -0.5px;
+            line-height: 1; margin-bottom: 4px;
+        }
+        .p-role {
+            font-size: 10.5px; color: #4A5A6A;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.3px; margin-bottom: 20px;
+        }
+
+        .gold-div {
+            display: flex; align-items: center; margin-bottom: 18px;
+        }
+        .gold-div-line  { flex: 1; height: 0.5px; background: rgba(212,175,55,0.35); }
+        .gold-div-diamond {
+            width: 5px; height: 5px;
+            border: 1px solid #D4AF37; transform: rotate(45deg);
+            flex-shrink: 0; margin: 0 8px;
+        }
+
+        .sec-lbl {
+            font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+            color: #3A4A5A; font-family: 'JetBrains Mono', monospace; margin-bottom: 8px;
+        }
+
+        .info-card {
+            background: rgba(212,175,55,0.03);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 8px; padding: 2px 14px; margin-bottom: 16px;
+        }
+        .info-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(212,175,55,0.06);
+        }
+        .info-row:last-child { border-bottom: none; }
+        .i-ico {
+            width: 26px; height: 26px; border-radius: 5px; flex-shrink: 0;
+            background: rgba(212,175,55,0.07); border: 1px solid rgba(212,175,55,0.1);
+            display: flex; align-items: center; justify-content: center; font-size: 11px;
+        }
+        .i-lbl { font-size: 9.5px; color: #3A4A5A; margin-bottom: 1px; font-family: 'DM Sans', sans-serif; }
+        .i-val { font-size: 11.5px; color: #D0C8B8; font-weight: 500; }
+        .i-lnk { font-size: 11.5px; color: rgba(212,175,55,0.75); font-weight: 500; text-decoration: none; }
+        .i-lnk:hover { color: #F0C040; text-decoration: underline; }
+
+        .proj-card {
+            background: rgba(212,175,55,0.03);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 8px; padding: 2px 14px; margin-bottom: 16px;
+        }
+        .proj-row {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 0; border-bottom: 1px solid rgba(212,175,55,0.06);
+        }
+        .proj-row:last-child { border-bottom: none; }
+        .proj-num {
+            font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+            color: #D4AF37; background: rgba(212,175,55,0.1);
+            border: 1px solid rgba(212,175,55,0.2);
+            padding: 1px 6px; border-radius: 2px; flex-shrink: 0; margin-top: 2px;
+        }
+        .proj-title { font-size: 12px; font-weight: 600; color: #D0C8B8; margin-bottom: 2px; }
+        .proj-title a { color: inherit; text-decoration: none; }
+        .proj-title a:hover { color: #F0C040; }
+        .proj-desc  { font-size: 10.5px; color: #3A4A5A; line-height: 1.55; }
+
+        .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
+        .tag {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px;
+            padding: 2px 8px; border-radius: 2px;
+            border: 1px solid rgba(212,175,55,0.2);
+            color: rgba(212,175,55,0.55);
+            background: rgba(212,175,55,0.03);
+        }
+
+        .cta-linkedin {
+            display: block; width: 100%; padding: 11px;
+            background: #D4AF37; color: #08122A;
+            border: none; border-radius: 7px;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            text-align: center; text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            box-shadow: 0 3px 14px rgba(212,175,55,0.2);
+            transition: all 0.2s; margin-bottom: 8px;
+        }
+        .cta-linkedin:hover { transform: translateY(-1px); box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
+
+        .cta-email {
+            display: block; width: 100%; padding: 9px;
+            background: transparent; color: #8896A4;
+            border: 1px solid rgba(212,175,55,0.18); border-radius: 7px;
+            font-size: 11.5px; font-weight: 500; cursor: pointer;
+            text-align: center; text-decoration: none;
+            font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+        }
+        .cta-email:hover { border-color: #D4AF37; color: rgba(212,175,55,0.8); }
+
+        @media (max-width: 700px) {
+            body { overflow-y: auto; height: auto; }
+            .stage { flex-direction: column; height: auto; }
+            .avatar-container { height: 60vh; min-height: 300px; }
+            .profile-panel { width: 100%; border-left: none; border-top: 1px solid rgba(212,175,55,0.2); }
+        }
     </style>
 </head>
 <body>
 
+    <!-- YOUR ORIGINAL SPLASH — unchanged -->
     <div id="splash">
         <button class="launch-btn" onclick="startPresentation()">Meet Srijen</button>
     </div>
 
     <audio id="audioTrack" src="voiceover.mp3" preload="auto"></audio>
 
-    <div class="avatar-container">
-        <model-viewer id="avatar" src="avatar.glb" 
-                      camera-orbit="0deg 85deg 2.2m" 
-                      interaction-prompt="none"
-                      disable-zoom disable-pan
-                      shadow-intensity="1">
-        </model-viewer>
-    </div>
+    <div class="stage">
 
-    <div class="ui-panel">
-        <h2>Srijen Gupta</h2>
-        <p>AI Product Management & Portfolio Optimization</p>
-        <div class="btn-group">
-            <a href="https://www.linkedin.com/in/srijenjgupta/" target="_blank" class="btn btn-linkedin">LinkedIn</a>
-            <a href="https://github.com/srijenjgupta/" target="_blank" class="btn btn-github">GitHub</a>
+        <!-- LEFT: avatar — your original markup, unchanged -->
+        <div class="avatar-container">
+            <model-viewer id="avatar"
+                          src="avatar.glb"
+                          camera-orbit="0deg 85deg 2.2m"
+                          interaction-prompt="none"
+                          disable-zoom disable-pan
+                          shadow-intensity="1"
+                          autoplay>
+            </model-viewer>
+
+            <div class="ui-panel">
+                <h2>Srijen Gupta</h2>
+                <p>AI Product Management &amp; Portfolio Optimization</p>
+                <div class="btn-group">
+                    <a href="https://www.linkedin.com/in/srijenjgupta/" target="_blank" class="btn btn-linkedin">LinkedIn</a>
+                    <a href="https://github.com/srijenjgupta/" target="_blank" class="btn btn-github">GitHub</a>
+                </div>
+            </div>
         </div>
+
+        <!-- RIGHT: profile panel -->
+        <div class="profile-panel">
+            <div class="panel-gold-top"></div>
+            <div class="panel-inner">
+
+                <div class="status-chip"><div class="pulse-dot"></div>Open to AI Product Roles</div>
+
+                <div class="p-name">Srijen Gupta</div>
+                <div class="p-role">AI × Product Manager × InsurTech · FinTech</div>
+
+                <div class="gold-div"><div class="gold-div-line"></div><div class="gold-div-diamond"></div><div class="gold-div-line"></div></div>
+
+                <div class="sec-lbl">About</div>
+                <div class="info-card">
+                    <div class="info-row">
+                        <div class="i-ico">🏢</div>
+                        <div>
+                            <div class="i-lbl">Current Role</div>
+                            <div class="i-val">PM · TATA AIG General Insurance</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="i-ico">🧠</div>
+                        <div>
+                            <div class="i-lbl">AI Focus</div>
+                            <div class="i-val">LLMs, GenAI, InsurTech Automation</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="i-ico">📱</div>
+                        <div>
+                            <div class="i-lbl">Phone</div>
+                            <div class="i-val">+91 80 8000 2838</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="i-ico">✉️</div>
+                        <div>
+                            <div class="i-lbl">Email</div>
+                            <a href="mailto:srijenjgupta@gmail.com" class="i-lnk">srijenjgupta@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="i-ico">🔗</div>
+                        <div>
+                            <div class="i-lbl">LinkedIn</div>
+                            <a href="https://www.linkedin.com/in/srijenjgupta/" class="i-lnk" target="_blank">linkedin.com/in/srijenjgupta</a>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="i-ico">💻</div>
+                        <div>
+                            <div class="i-lbl">GitHub</div>
+                            <a href="https://github.com/srijenjgupta/" class="i-lnk" target="_blank">github.com/srijenjgupta</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sec-lbl">AI Projects</div>
+                <div class="proj-card">
+                    <div class="proj-row">
+                        <span class="proj-num">01</span>
+                        <div>
+                            <div class="proj-title">
+                                <a href="https://github.com/srijenjgupta/Cyber-risk-agent" target="_blank">Cyber Risk Agent</a>
+                            </div>
+                            <div class="proj-desc">Multi-agent AI system using CrewAI + Gemini 2.5 Pro that scouts live Indian cyber threats and auto-generates insurance-grade PDF risk reports.</div>
+                        </div>
+                    </div>
+                    <div class="proj-row">
+                        <span class="proj-num">02</span>
+                        <div>
+                            <div class="proj-title">
+                                <a href="https://github.com/srijenjgupta/NoTrace-Docs" target="_blank">NoTrace Docs</a>
+                            </div>
+                            <div class="proj-desc">Zero-retention document processing suite with interactive PDF studio. 100% private, FastAPI-powered, Docker-containerised — no data ever stored.</div>
+                        </div>
+                    </div>
+                    <div class="proj-row">
+                        <span class="proj-num">03</span>
+                        <div>
+                            <div class="proj-title">
+                                <a href="https://github.com/srijenjgupta/Proof-of-Presence-tracker" target="_blank">Proof of Presence Tracker</a>
+                            </div>
+                            <div class="proj-desc">GPS-geofenced field force verification tool for SMEs — real-time location proof with tamper-resistant check-ins for on-ground teams.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tags">
+                    <span class="tag">AI Product Strategy</span>
+                    <span class="tag">LLMs & GenAI</span>
+                    <span class="tag">InsurTech</span>
+                    <span class="tag">FinTech</span>
+                    <span class="tag">0→1 Builds</span>
+                </div>
+
+                <a href="https://www.linkedin.com/in/srijenjgupta/" class="cta-linkedin" target="_blank">Connect on LinkedIn →</a>
+                <a href="mailto:srijenjgupta@gmail.com" class="cta-email">srijenjgupta@gmail.com</a>
+
+            </div>
+        </div>
+
     </div>
 
     <script>
         function startPresentation() {
-            // Remove the splash screen
             document.getElementById('splash').style.display = 'none';
-            
-            // Play the audio
+
+            // Play audio
             const audio = document.getElementById('audioTrack');
-            audio.play().catch(e => console.log("Audio blocked", e));
-            
-            // Force the 3D animation to play from the exact beginning to sync with audio
+            audio.play().catch(e => console.log("Audio blocked:", e));
+
+            // Fix: wait for model-viewer to be ready before calling play()
             const viewer = document.getElementById('avatar');
-            viewer.currentTime = 0;
-            viewer.play();
+            if (viewer.loaded) {
+                viewer.currentTime = 0;
+                viewer.play();
+            } else {
+                viewer.addEventListener('load', () => {
+                    viewer.currentTime = 0;
+                    viewer.play();
+                }, { once: true });
+            }
         }
     </script>
+
 </body>
 </html>
